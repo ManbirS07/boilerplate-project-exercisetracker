@@ -54,6 +54,7 @@ app.post('/api/users/:_id/exercises',(req,res)=>
   }
   //find user realted to this id
   const userr=User.findById(id)
+  console.log(userr)
 
   const exercise=new Exercise({
     userId:id,
