@@ -22,6 +22,16 @@ const userschema= new mongoose.Schema({
 
 const User=mongoose.model("User",userschema)
 
+const exerciseSchema = new mongoose.Schema({
+	userId: String,
+	username: String,
+	description: { type: String, required: true },
+	duration: { type: Number, required: true },
+	date: String,
+});
+
+const Exercise=mongoose.model("Exercise",exerciseSchema)
+
 app.post('/api/users',(req,res)=>
 {
   const username=req.body.username
@@ -37,7 +47,25 @@ app.get('/api/users',(req,res)=>
 })
 app.post('/api/users/:_id/exercises',(req,res)=>
 {
-  console.log('abc')
+  const id=req.params._idid
+  const {description,duration,date}=req.body
+  if(!date) {
+    date=date = new Date().toISOString().substring(0, 10);
+  }
+  //find user realted to this id
+  const userr=User.findById(id)
+
+  const exercise=new Exercise({
+    userId:id,
+    username:userr.username,
+    description: description,
+		duration: parseInt(duration),
+		date: date,
+  })
+
+  exercise.save()
+
+  res.json({})
 })
 
 const listener = app.listen(process.env.PORT || 3000, () => {
